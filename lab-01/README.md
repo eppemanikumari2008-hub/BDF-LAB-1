@@ -1,7 +1,7 @@
 # Lab 1: Node.js and Express server
 
-Backend Development Fundamentals · Year II Term II · Aurora  
-Faculty: Joel Prashanth D
+**Course:** Backend Development Fundamentals (BDF) · Year II Term II · Aurora  
+**Faculty:** Joel Prashanth D  
 
 ---
 
@@ -23,11 +23,27 @@ The objective of this lab is to understand server-side programming in JavaScript
 
 ---
 
-## Technologies Used
-- **Node.js** (v24.x) — Server-side JavaScript runtime environment built on Chrome's V8 engine.
-- **Express.js** (v5.x) — Minimalist web application framework for Node.js.
-- **JavaScript (ES6+)** — Programming language for server logic.
-- **npm** (v11.x) — Node package manager for managing dependencies and scripts.
+## Requirements
+Following the official lab manual specifications:
+1. **Project Initialization:** Set up a project folder, initialize using `npm init -y`, and configure `package.json`.
+2. **Package Management:** Install Express via `npm install express` and understand the `node_modules` structure.
+3. **Basic HTTP Server:** Create a plain Node.js server using `http.createServer()` responding with `"Hello"` on port `3000`.
+4. **Express Migration:** Rewrite the server using Express (`const app = express()`, `app.listen(3000)`).
+5. **Route Implementation:**
+   - `GET /` — Welcome message text (Status 200).
+   - `GET /about` — JSON object containing student name and section (Status 200).
+   - `GET /time` — Dynamic current date and time using `new Date()` (Status 200).
+   - `404 Handler` — Return a clear JSON error message for any unknown route (Status 404).
+6. **Execution & Verification:** Run the server, verify each endpoint with correct status codes, and record terminal logs.
+7. **Documentation & Deliverables:** Create screenshots of all endpoints and prepare the project for GitHub submission and deployment.
+
+---
+
+## Software and Technologies
+- **Node.js** (v24.14.0) — Server-side JavaScript runtime environment built on Google Chrome's V8 engine.
+- **Express.js** (v5.3.0) — Fast, minimalist web framework for routing and middleware handling.
+- **JavaScript (ES6+)** — Primary language for server-side logic and asynchronous handling.
+- **npm** (v11.9.0) — Default package manager for managing dependencies and lifecycle scripts.
 
 ---
 
@@ -42,7 +58,7 @@ lab-01/
 ├── package-lock.json        # Exact dependency tree lockfile
 ├── server.js                # Main Express server with routes and middleware
 ├── test.js                  # Automated test script validating all endpoints and status codes
-├── README.md                # Comprehensive lab documentation and viva answers
+├── README.md                # Comprehensive lab report and documentation
 └── screenshots/             # Output screenshots of endpoints and running server
     ├── home.png             # Screenshot of GET / (Welcome route)
     ├── about.png            # Screenshot of GET /about (JSON student details)
@@ -51,20 +67,56 @@ lab-01/
     └── server.png           # Screenshot of terminal running Express server
 ```
 
-### File and Folder Descriptions
-- `server.js`: The central Express.js application file that configures middleware, defines all route handlers (`/`, `/about`, `/time`), handles unknown routes with 404, and binds to the specified port.
-- `basic-server.js`: Implements a basic HTTP server using Node.js's built-in `http` module (`http.createServer()`), demonstrating fundamental server mechanics before introducing a framework.
-- `package.json`: Contains project metadata, execution scripts (`start`, `start:basic`, `test`), and the list of external packages (`express`).
-- `package-lock.json`: Locks exact versions of installed packages and transitive dependencies for reproducible builds.
-- `test.js`: An automated test suite using Node.js native `fetch` to verify all endpoints, HTTP status codes, and response bodies.
-- `screenshots/`: Contains captured browser outputs and terminal logs confirming successful execution.
-- `.gitignore`: Prevents sensitive files and heavy generated folders like `node_modules` from being pushed to version control.
+### Purpose of Important Files & Folders:
+- **`server.js`**: The central Express.js application file that configures middleware, defines all route handlers (`/`, `/about`, `/time`), handles unknown routes with 404, and binds to the specified port.
+- **`basic-server.js`**: Implements a basic HTTP server using Node.js's built-in `http` module (`http.createServer()`), demonstrating fundamental server mechanics before introducing a framework.
+- **`package.json`**: Contains project metadata, execution scripts (`start`, `start:basic`, `test`), and the list of external packages (`express`).
+- **`package-lock.json`**: Locks exact versions of installed packages and transitive dependencies for reproducible builds.
+- **`test.js`**: An automated test suite using Node.js native `fetch` to verify all endpoints, HTTP status codes, and response bodies.
+- **`screenshots/`**: Contains captured browser outputs and terminal logs confirming successful execution.
+- **`.gitignore`**: Prevents sensitive files and heavy generated folders like `node_modules` from being pushed to version control.
 
 ---
 
-## package.json Explanation
+## Installation
 
-The `package.json` file is the heart of any Node.js project. It defines metadata, dependencies, and automation scripts.
+### Prerequisites
+- Node.js (v18.x or later) installed on your system.
+- Git installed on your system.
+
+### Installing Dependencies
+Navigate into the `lab-01` directory and install project dependencies:
+```bash
+cd lab-01
+npm install
+```
+
+### How to Run and Stop the Server
+
+1. **Start the Express Application:**
+   ```bash
+   npm start
+   ```
+   The server will start listening at: `http://localhost:3000`
+
+2. **Start the Basic HTTP Server (Alternative):**
+   ```bash
+   npm run start:basic
+   ```
+
+3. **Run the Automated Tests:**
+   ```bash
+   npm test
+   ```
+
+4. **Stopping the Server:**
+   Press `Ctrl + C` in your terminal to terminate the server process.
+
+---
+
+## package.json
+
+The `package.json` file is the manifest for any Node.js project. It defines metadata, dependencies, and automation scripts.
 
 ### Important Fields Explained:
 1. **`name`**: The unique identifier/name of the project or package (e.g., `"lab-01"`). Must be lowercase and URL-safe.
@@ -77,14 +129,19 @@ The `package.json` file is the heart of any Node.js project. It defines metadata
    - `"test": "node test.js"` — Runs the automated test suite against the endpoints.
 6. **`dependencies`**: Lists third-party npm packages required by the application in production (e.g., `"express": "^5.3.0"`).
 
-### Difference Between `package.json` and `node_modules`
+---
 
-| Feature | `package.json` | `node_modules/` |
-| :--- | :--- | :--- |
-| **Purpose** | Manifest file specifying project metadata, script commands, and direct package requirements. | Directory containing the physical downloaded code of all dependencies and transitive packages. |
-| **Size** | Extremely small (typically 1–2 KB text file). | Large directory containing thousands of files (megabytes or gigabytes). |
-| **Version Control** | Committed to Git and pushed to remote repositories. | Ignored via `.gitignore` and never committed to Git. |
-| **Portability** | Universal; can be shared across systems to recreate identical environments via `npm install`. | Machine-specific; regenerated locally based on `package.json` and `package-lock.json`. |
+## node_modules
+
+The `node_modules/` directory is automatically created by npm when packages are installed.
+
+### Purpose and Difference from `package.json`:
+- **`package.json`** is a lightweight manifest file (typically 1–2 KB) specifying project metadata, script commands, and direct package requirements. It is committed to Git.
+- **`node_modules/`** is the physical directory on disk containing the compiled code and files of all installed packages, plus their transitive dependencies. It contains hundreds of nested folders and thousands of files.
+- **Why `node_modules/` must NEVER be committed to Git:**
+  1. **Massive Size:** It adds unnecessary megabytes or gigabytes of bloat to the repository.
+  2. **Platform Specificity:** Some packages include OS-dependent binary bindings (e.g., Windows vs Linux).
+  3. **Reproducibility:** Any developer can regenerate the exact same `node_modules` directory anytime simply by running `npm install`.
 
 ---
 
@@ -134,7 +191,7 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Built-in middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -144,12 +201,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// Route: GET /
+// Route 1: GET / - Welcome message
 app.get('/', (req, res) => {
   res.status(200).send('Welcome to Node.js and Express Server');
 });
 
-// Route: GET /about
+// Route 2: GET /about - Student information in JSON
 app.get('/about', (req, res) => {
   res.status(200).json({
     name: 'E. Mani Kumari',
@@ -158,7 +215,7 @@ app.get('/about', (req, res) => {
   });
 });
 
-// Route: GET /time
+// Route 3: GET /time - Current date and time
 app.get('/time', (req, res) => {
   const currentTime = new Date();
   if (req.query.format === 'json') {
@@ -170,18 +227,35 @@ app.get('/time', (req, res) => {
   res.status(200).send(currentTime.toString());
 });
 
-// 404 Route Handler for Unknown Paths
+// Route 4: 404 Route Handler for Unknown Paths
 app.use((req, res) => {
   res.status(404).json({
     message: 'Route not found'
   });
 });
 
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('Unhandled Server Error:', err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: err.message
+  });
+});
+
 // Start Server
 if (require.main === module) {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Express server is running on port ${PORT}`);
     console.log(`Access the server at http://localhost:${PORT}`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${PORT} is already in use.`);
+    } else {
+      console.error('Error starting server:', err.message);
+    }
   });
 }
 
@@ -190,52 +264,66 @@ module.exports = app;
 
 ---
 
-## Endpoints
+## Routes
 
 | Method | Endpoint | Description | Expected Status Code | Response Type | Sample Response |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **GET** | `/` | Welcome message | `200` | Text/Plain | `Welcome to Node.js and Express Server` |
 | **GET** | `/about` | Student name, registration number, and section | `200` | Application/JSON | `{"name":"E. Mani Kumari","registrationNumber":"252U1R5044","section":"AIDE-2A"}` |
-| **GET** | `/time` | Current system date and time | `200` | Text/Plain (or JSON via `?format=json`) | `Sun Nov 01 2026 22:13:46 GMT+0530 (India Standard Time)` |
+| **GET** | `/time` | Current system date and time | `200` | Text/Plain (or JSON via `?format=json`) | `Sun Nov 01 2026 22:55:44 GMT+0530 (India Standard Time)` |
 | **GET** | `*` *(any invalid route)* | Route not found error handler | `404` | Application/JSON | `{"message":"Route not found"}` |
 
 ---
 
-## Installation & How to Run
+## Testing
 
-### Prerequisites
-- Node.js (v18.x or later) installed on your system.
-- Git installed on your system.
+An automated test script (`test.js`) verifies all endpoints, status codes, and response structures.
 
-### 1. Installation
-Navigate into the `lab-01` directory and install the necessary dependencies:
-```bash
-cd lab-01
-npm install
-```
-
-### 2. Running the Express Application
-To launch the primary Express server:
-```bash
-npm start
-```
-The server will start listening at:
-`http://localhost:3000`
-
-### 3. Running the Basic HTTP Server (Alternative)
-To test the plain Node.js `http` module server:
-```bash
-npm run start:basic
-```
-
-### 4. Running the Automated Tests
-To run the automated endpoint and status code test suite:
+### Execution Command:
 ```bash
 npm test
 ```
 
-### 5. Stopping the Server
-Press `Ctrl + C` in the terminal to gracefully stop the running Node process.
+### Actual Test Suite Results:
+```text
+> lab-01@1.0.0 test
+> node test.js
+
+[TEST SUITE] Starting test suite on http://localhost:3001...
+
+[2026-11-01T17:23:45.456Z] GET /
+✅ [PASS] Home Route
+   Endpoint: / | Status: 200
+   Response: Welcome to Node.js and Express Server
+
+[2026-11-01T17:23:45.493Z] GET /about
+✅ [PASS] About Route
+   Endpoint: /about | Status: 200
+   Response: {"name":"E. Mani Kumari","registrationNumber":"252U1R5044","section":"AIDE-2A"}
+
+[2026-11-01T17:23:45.499Z] GET /time
+✅ [PASS] Time Route
+   Endpoint: /time | Status: 200
+   Response: Sun Nov 01 2026 22:53:45 GMT+0530 (India Standard Time)
+
+[2026-11-01T17:23:45.506Z] GET /time?format=json
+✅ [PASS] Time Route (JSON format)
+   Endpoint: /time?format=json | Status: 200
+   Response: {"currentTime":"2026-11-01T17:23:45.506Z","timestamp":1793553825506}
+
+[2026-11-01T17:23:45.509Z] GET /invalid
+✅ [PASS] 404 Not Found Route (/invalid)
+   Endpoint: /invalid | Status: 404
+   Response: {"message":"Route not found"}
+
+[2026-11-01T17:23:45.512Z] GET /some/other/path
+✅ [PASS] 404 Not Found Route (/some/other/path)
+   Endpoint: /some/other/path | Status: 404
+   Response: {"message":"Route not found"}
+
+[TEST SUMMARY] Tests completed: 6/6 passed.
+🎉 All Express endpoint tests PASSED successfully!
+```
 
 ---
 
@@ -276,10 +364,54 @@ Shows the server starting with `npm start`, listening on port 3000, and logging 
 
 ---
 
+## Viva Questions & Answers
+
+### Required Lab Manual Questions:
+
+#### 1. What is the difference between package.json and node_modules?
+**Answer:**
+- **`package.json`** is a lightweight manifest file that lists project metadata (name, version, author), executable scripts (`start`, `test`), and the names and semantic version ranges of direct dependencies. It is committed to Git.
+- **`node_modules`** is the physical directory on disk containing the downloaded code, libraries, and binaries of all dependencies and transitive packages. It is very large and should never be committed to Git.
+
+#### 2. What does app.listen do?
+**Answer:** `app.listen()` binds the Express application to a specific TCP port (and optionally an IP host) and starts listening for incoming client HTTP requests. Internally, it creates and configures a Node.js `http.Server` instance and invokes its `.listen()` method.
+
+#### 3. What do request and response represent?
+**Answer:**
+- **`request` (`req`)**: An object representing the incoming HTTP request sent by the client. It contains request headers, HTTP method (GET, POST), URL parameters, query strings, and body payload.
+- **`response` (`res`)**: An object representing the outgoing HTTP response sent by the server back to the client. It provides methods such as `res.status()`, `res.send()`, and `res.json()` to set HTTP status codes, headers, and body content.
+
+### Additional Helpful Viva Questions:
+
+#### 4. What is Node.js?
+**Answer:** Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript outside the browser. Built on Google Chrome's V8 engine, it utilizes an asynchronous, event-driven, non-blocking I/O model suitable for scalable backend applications.
+
+#### 5. What is Express.js?
+**Answer:** Express.js is a minimalist and flexible web application framework for Node.js that provides robust features for building web and mobile applications, including routing, middleware chaining, and template rendering.
+
+#### 6. What is HTTP?
+**Answer:** HTTP (Hypertext Transfer Protocol) is an application-layer client-server protocol used to deliver hypermedia files across the web.
+
+#### 7. What is a route?
+**Answer:** A route is an application endpoint defined by an HTTP method (e.g., GET, POST) and an associated URL path that executes specific handler logic when matched.
+
+#### 8. What is a 404 status code?
+**Answer:** A `404 Not Found` status code indicates that the server successfully received the request, but could not find the requested resource or matching route.
+
+#### 9. What is npm?
+**Answer:** `npm` (Node Package Manager) is the default package manager for Node.js, providing an online package registry and a command-line interface to install and manage libraries.
+
+#### 10. What is the difference between Node.js HTTP server and Express server?
+**Answer:**
+- **Node.js HTTP Server**: Low-level. Requires manual parsing of URLs, manual header writing, and manual routing through switch statements.
+- **Express Server**: High-level abstraction over Node's HTTP module. Provides intuitive routing methods (`app.get()`), built-in JSON helpers (`res.json()`), and middleware integration.
+
+---
+
 ## Problems Faced and Solutions
 
 1. **IPv6 vs IPv4 Loopback Resolution on Windows (`localhost` vs `127.0.0.1`):**
-   - *Problem:* During initial loopback testing, node requests to `localhost` occasionally defaulted to IPv6 (`::1`), causing connection timeouts when the server bound exclusively to IPv4.
+   - *Problem:* During initial automated testing, node requests to `localhost` occasionally defaulted to IPv6 (`::1`), causing connection timeouts when the server bound exclusively to IPv4.
    - *Solution:* Explicitly tested both `127.0.0.1` and `localhost`, ensuring standard port binding across dual-stack configurations.
 
 2. **Handling 404 Status Codes in Express:**
@@ -289,46 +421,6 @@ Shows the server starting with `npm start`, listening on port 3000, and logging 
 3. **Dynamic Port Binding for Cloud Deployment:**
    - *Problem:* Hardcoding port `3000` causes deployment failures on cloud platforms (e.g., Render, Railway, Heroku) because cloud providers dynamically inject a port via the `PORT` environment variable.
    - *Solution:* Used `const PORT = process.env.PORT || 3000;`, enabling dynamic cloud configuration while maintaining port `3000` as a default for local development.
-
----
-
-## Viva Questions & Answers
-
-### 1. What is Node.js?
-**Answer:** Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside of a web browser. It is built on Google Chrome's V8 JavaScript engine and uses an event-driven, non-blocking I/O model, making it lightweight and efficient for data-intensive real-time backend applications.
-
-### 2. What is Express.js?
-**Answer:** Express.js is a fast, unopinionated, and minimalist web application framework for Node.js. It provides a robust set of features to build web applications and APIs easily, including simplified routing, middleware integration, template engine support, and convenient HTTP request/response handling.
-
-### 3. What is the difference between `package.json` and `node_modules`?
-**Answer:**
-- `package.json` is a small text manifest file that stores metadata about the project (name, version, scripts) and lists the dependencies and their required version ranges. It is committed to Git.
-- `node_modules` is the directory where npm actually installs and stores the physical code and binaries of all the dependencies and their transitive packages. It is large and should never be committed to Git.
-
-### 4. What does `app.listen()` do?
-**Answer:** `app.listen()` binds the Express application to a specified port number (and optionally a host) and begins listening for incoming HTTP connections. It is a wrapper around Node.js's underlying `http.Server.listen()` method.
-
-### 5. What do `request` and `response` represent?
-**Answer:**
-- `request` (usually abbreviated as `req`): An object representing the incoming HTTP request from the client. It contains details like HTTP headers, query parameters, URL path, HTTP method, and body data.
-- `response` (usually abbreviated as `res`): An object representing the outgoing HTTP response sent by the server back to the client. It provides methods to set status codes (`res.status()`), headers (`res.set()`), and body content (`res.send()`, `res.json()`).
-
-### 6. What is HTTP?
-**Answer:** HTTP (Hypertext Transfer Protocol) is an application-layer protocol used for transmitting hypermedia documents (like HTML, JSON, images) across the Internet. It follows a stateless client-server model where a client sends an HTTP request and the server returns an HTTP response.
-
-### 7. What is a route?
-**Answer:** A route is an application endpoint defined by a specific URI (path) and a specific HTTP request method (such as GET, POST, PUT, DELETE). It determines how an application responds to a client request at that specific endpoint.
-
-### 8. What is a 404 status code?
-**Answer:** A `404 Not Found` status code is a standard HTTP response code indicating that the client was able to communicate with the server, but the server could not find the requested resource or path.
-
-### 9. What is npm?
-**Answer:** `npm` (Node Package Manager) is the default package manager for Node.js. It consists of a command-line client (`npm`) and an online registry of public and private JavaScript packages. It allows developers to install, share, update, and manage dependencies in their projects.
-
-### 10. What is the difference between a Node.js HTTP server and an Express server?
-**Answer:**
-- A **Node.js HTTP server** (built using the built-in `http` module) is low-level. Developers must manually parse request URLs, handle HTTP methods with switch/if statements, manage MIME types, parse request bodies, and construct headers manually.
-- An **Express server** is built on top of the Node.js `http` module but abstracts away low-level complexities. It provides intuitive routing (`app.get`, `app.post`), built-in JSON parsing, modular middleware pipelines, and helper methods (`res.json()`, `res.send()`), resulting in cleaner and more maintainable code.
 
 ---
 
@@ -350,7 +442,7 @@ The application is structured to be completely cloud-ready.
 
 ---
 
-## Submission & GitHub Instructions
+## GitHub Submission Instructions
 
 To submit your lab project to your GitHub course repository:
 
@@ -371,13 +463,17 @@ npm-debug.log*
 .DS_Store
 ```
 
-### 3. Stage and Commit Files
+### 3. Stage Files
 ```bash
 git add .
+```
+
+### 4. Commit Changes
+```bash
 git commit -m "Complete BDF Lab 01: Node.js and Express server with tests and documentation"
 ```
 
-### 4. Link to Remote Repository & Push
+### 5. Link to Remote Repository & Push
 Create a repository on your GitHub account (e.g., `BDF-Labs`), link your local repository, and push:
 ```bash
 git branch -M main
